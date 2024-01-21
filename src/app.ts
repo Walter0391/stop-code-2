@@ -1,15 +1,24 @@
-import * as driver from "./driver";
 import * as orm from "./orm";
 
-const main = async () => {
-    console.log(await driver.insertProdotto("Cover", 14));
-    console.log(await driver.deleteProdotto("65a8f145de414b47675673af"));
-    console.log(await driver.getProdotti());
-}
+const index = async () => {
+  console.log(await orm.getArticoli());
 
-const mainORM = async () => {
-    console.log(await orm.insertCategoria("", "", ""));
-    console.log(await orm.getCategorie());
-}
+  //   console.log(
+  //     await orm.insertPost(
+  //       "Antonio",
+  //       "va a pesca",
+  //       "al tevere",
+  //       " e prende una pantegana"
+  //     )
+  //   );
+  //   console.log(
+  //     await orm.modificaPost(
+  //       "65ad23bdf0d2321771ee7a1e",
+  //       "sbaglia un goal già fatto"
+  //     )
+  //   );
 
-mainORM();
+  console.log(await orm.deleteArticolo("65ad28234c223d122439bb12"));
+};
+
+index();

@@ -1,63 +1,67 @@
 import mongoose from "mongoose";
-import { Categoria } from "./models/categoria";
+import { Post } from "./models/post";
 
-const connectionString = "mongodb+srv://uollazzi:1234@cluster0.axxoeci.mongodb.net/?retryWrites=true&w=majority";
+const connectionString =
+  "mongodb+srv://mengoniwalter:1234@cluster0.p2fjgut.mongodb.net/";
 
-export const getCategorie = async () => {
-    try {
-        await mongoose.connect(connectionString, { dbName: "amazon" });
+export const getArticoli = async () => {
+  try {
+    await mongoose.connect(connectionString, { dbName: "Post" });
+    return await Post.find();
+  } catch (error) {
+  } finally {
+    await mongoose.disconnect();
+  }
+};
 
-        return await Categoria.find();
-    } catch (error) {
-        console.error(error);
-    }
-    finally {
-        await mongoose.disconnect();
-    }
-}
+//aggiungo post
+export const insertPost = async (
+  autore: string,
+  titolo: string,
+  sottotitolo: string,
+  descrizione: string
+) => {
+  try {
+    await mongoose.connect(connectionString, { dbName: "Post" });
 
-export const insertCategoria = async (titolo: string, sottotitolo: string, descrizione: string) => {
-    try {
-        await mongoose.connect(connectionString, { dbName: "amazon" });
+    let posts = new Post();
+    posts.autore = autore;
+    posts.titolo = titolo;
+    posts.sottotitolo = sottotitolo;
+    posts.descrizione = descrizione;
 
-        let cat = new Categoria();
-        cat.titolo = titolo;
-        cat.sottotitolo = sottotitolo;
-        cat.descrizione = descrizione;
+    const result = await posts.save();
 
-        const result = await cat.save();
+    return result;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    await mongoose.disconnect();
+  }
+};
 
-        return result;
-    } catch (error) {
-        console.error(error);
-    }
-    finally {
-        await mongoose.disconnect();
-    }
-}
+//modifico post
+export const modificaPost = async (id: string, descrizione: string) => {
+  try {
+    await mongoose.connect(connectionString, { dbName: "Post" });
 
-export const getCategoriaById = async (id: string) => {
-    try {
-        await mongoose.connect(connectionString, { dbName: "amazon" });
+    return await Post.updateOne({ _id: id }, { descrizione: descrizione });
+  } catch (error) {
+    console.error(error);
+  } finally {
+    await mongoose.disconnect();
+  }
+};
 
-        return await Categoria.findById(id);
-    } catch (error) {
-        console.error(error);
-    }
-    finally {
-        await mongoose.disconnect();
-    }
-}
+// elimino post
+export const deleteArticolo = async (id: string) => {
+  try {
+    await mongoose.connect(connectionString, { dbName: "Post" });
 
-export const deleteCategoria = async (id: string) => {
-    try {
-        await mongoose.connect(connectionString, { dbName: "amazon" });
-
-        return await Categoria.deleteOne({ _id: id });
-    } catch (error) {
-        console.error(error);
-    }
-    finally {
-        await mongoose.disconnect();
-    }
-}
+    return await Post.deleteOne({ _id: id });
+  } catch (error) {
+    console.error(error);
+  } finally {
+    await mongoose.disconnect();
+  }
+};
